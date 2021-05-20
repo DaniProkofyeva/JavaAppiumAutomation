@@ -1,1 +1,2 @@
-public class CoreTestCase{}
+public class CoreTestCase
+{}

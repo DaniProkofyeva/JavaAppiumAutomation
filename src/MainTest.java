@@ -1,16 +1,32 @@
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 public class MainTest extends CoreTestCase
 {
-     MathHelper Math = new MathHelper();
+    @Before
+    public void textStartTest()
+    {
+        System.out.println("Start test");
+    }
+
+    @After
+    public void testFinishTest()
+    {
+        System.out.println("Finish test");
+    }
 
     @Test
-    public void myFirstTest()
+    public void firstTest()
     {
-         int a = Math.multyply(5);
-         System.out.println(a);
-
-         int b = Math.multyply(10, 15);
-         System.out.println(b);
+        System.out.println("First test");
     }
+
+    @Test
+    public void secondTest()
+    {
+        System.out.println("Second test");
+    }
+
 }
