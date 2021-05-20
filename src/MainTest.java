@@ -1,16 +1,24 @@
 import org.junit.Test;
 
 public class MainTest {
+
+    int a = 5;
+    int b = 11;
+
     @Test
     public void myFirstTest()
     {
-        int b = 10;
-        int a = 15;
+         int a = this.multyply(5);
+         System.out.println(a);
 
-        if (a > b){
-            System.out.println("This will never happen");
-        } else {
-            System.out.println("This is what will happen");
-        }
+         int b = this.multyply(10, 15);
+         System.out.println(b);
+    }
+    public int multyply( int number)
+    {
+        return number * 2;
+    }
+    public int multyply(int number,int multiplier){
+        return number * multiplier;
     }
 }
