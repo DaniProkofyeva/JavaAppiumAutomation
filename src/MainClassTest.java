@@ -7,7 +7,7 @@ public class MainClassTest extends MainClass
     {
         int a = this.getClassNumber();
 
-        if (a < 45) {
+        if (a > 45) {
             System.out.println("Ok");
         } else {
             System.out.println("Bad");
