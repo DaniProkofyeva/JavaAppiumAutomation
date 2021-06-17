@@ -9,6 +9,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.net.URL;
+import java.util.List;
 
 public class FirstTest {
 
@@ -146,6 +147,46 @@ public class FirstTest {
                 "Input field contains incorrect text"
         );
     }
+
+    @Test
+    public void testSearchAndCancel(){
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Text 'Search Wikipedia' is not found",
+                5
+        );
+        waitForElementAndSendKeys(
+                By.id("org.wikipedia:id/search_src_text"),
+                "Java",
+                "Input field is not found",
+                5
+        );
+        waitForNumberOfSeveralElements(
+                By.id("org.wikipedia:id/page_list_item_container"),
+                1,
+                "Cannot find any elements.",
+                15
+        );
+
+        waitForElementAndClear(
+                By.id("org.wikipedia:id/search_src_text"),
+                "Input field is not found",
+                5
+        );
+
+        waitForElementNotPresent(
+                By.id("org.wikipedia:id/page_list_item_container"),
+                "Elements are present",
+                15
+        );
+    }
+
+    private List<WebElement> waitForNumberOfSeveralElements(By by, int number, String errorMessage, long timeoutInSeconds) {
+        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
+        wait.withMessage("\n  " + errorMessage + "\n");
+        return wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(by, number));
+    }
+
     private void assertElementHasText(By by, String expected, String errorMessage) {
         String actual = driver.findElement(by).getAttribute("text");
         Assert.assertEquals(errorMessage, expected, actual);
