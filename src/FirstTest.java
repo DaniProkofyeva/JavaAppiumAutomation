@@ -11,6 +11,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.net.URL;
 import java.util.List;
 
+import static org.junit.Assert.assertTrue;
+
 public class FirstTest {
 
     private AndroidDriver<?> driver;
@@ -180,6 +182,48 @@ public class FirstTest {
                 15
         );
     }
+
+    @Test
+    public void testSearchResultsText() {
+
+        final String searchWord = "Java";
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Text 'Search Wikipedia' is not found",
+                5
+        );
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                searchWord,
+                "Cannot find search input",
+                5
+        );
+
+        List<WebElement> articleTitles = waitForElementsLocated(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']" +
+                        "//*[@resource-id='org.wikipedia:id/page_list_item_title']"),
+                "Cannot find any title",
+                15
+        );
+
+        for (int i = 0; i < articleTitles.size(); i++) {
+            String articleTitle = articleTitles.get(i).getAttribute("text").toLowerCase();
+            Assert.assertTrue(
+                    "\n In title with index [" + i + "]" +
+                            " Missing value '" + searchWord + "'.\n",
+                    articleTitle.contains(searchWord.toLowerCase()));
+        }
+    }
+
+    private List<WebElement> waitForElementsLocated(By by, String error_message, long timeoutInSeconds) {
+        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
+        wait.withMessage("\n  " + error_message + "\n");
+        return wait.until(
+                ExpectedConditions.presenceOfAllElementsLocatedBy(by)
+        );
+    }
+
 
     private List<WebElement> waitForNumberOfSeveralElements(By by, int number, String errorMessage, long timeoutInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
