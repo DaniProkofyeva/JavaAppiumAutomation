@@ -8,7 +8,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import java.net.URL;
 
 public class FirstTest {
@@ -127,6 +126,32 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void testCheckText() {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Text 'Search Wikipedia' is not found",
+                5
+        );
+
+        waitForElementPresent(
+                By.id("org.wikipedia:id/search_src_text"),
+                "Input field is not found",
+                5
+        );
+
+        assertElementHasText(
+                By.id("org.wikipedia:id/search_src_text"),
+                "Search…",
+                "Input field contains incorrect text"
+        );
+    }
+    private void assertElementHasText(By by, String expected, String errorMessage) {
+        String actual = driver.findElement(by).getAttribute("text");
+        Assert.assertEquals(errorMessage, expected, actual);
+    }
+
+
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds)
     {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
@@ -169,4 +194,5 @@ public class FirstTest {
         element.clear();
         return element;
     }
+
 }
