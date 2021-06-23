@@ -1,3 +1,4 @@
+import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
 import org.junit.After;
@@ -12,12 +13,11 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.net.URL;
 import java.util.List;
-
 import static org.junit.Assert.assertTrue;
 
 public class FirstTest {
 
-    private AndroidDriver<?> driver;
+    private AppiumDriver driver;
 
     @Before
     public void setUp() throws Exception
@@ -26,6 +26,7 @@ public class FirstTest {
         capabilities.setCapability("platformName","Android");
         capabilities.setCapability("deviceName","AndroidTestDevice");
         capabilities.setCapability("platformVersion","8.0");
+        capabilities.setCapability("automationName","Appium");
         capabilities.setCapability("appPackage","org.wikipedia");
         capabilities.setCapability("appActivity",".main.MainActivity");
         capabilities.setCapability("app","C:\\Users\\xxprokod\\IdeaProjects\\JavaAppiumAutomation\\apks\\org.wikipedia.apk");
@@ -228,13 +229,13 @@ public class FirstTest {
 
         waitForElementAndSendKeys(
                 By.xpath("//*[contains(@text,'Search…')]"),
-                "Java",
+                "Appium",
                 "Cannot find search input",
                 5
         );
         waitForElementAndClick(
-                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']"),
-                "Cannot find 'Search Wikipedia' input",
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='Appium']"),
+                "Cannot find 'Appium' article in search",
                 5
         );
 
@@ -244,7 +245,12 @@ public class FirstTest {
                 15
         );
 
-        swipeUp(2000);
+        swipeUpToFindElement(
+                By.xpath("//*[@text='View page in browser']"),
+                "Cannot find the end of the article",
+                20
+        );
+
     }
 
     private List<WebElement> waitForElementsLocated(By by, String error_message, long timeoutInSeconds) {
@@ -320,4 +326,23 @@ public class FirstTest {
         action.press(x, startY).waitAction(timeOfSwipe).moveTo(x, endY).release().perform();
     }
 
+    protected void swipeUpQuick()
+    {
+        swipeUp(200);
+    }
+
+    protected void swipeUpToFindElement(By by, String error_message, int max_swipes)
+    {
+        int already_swiped = 0;
+        while (driver.findElements(by).size() == 0){
+
+            if (already_swiped > max_swipes){
+                waitForElementPresent(by,"Cannot find element by swiping up. \n" + error_message, 0);
+                return;
+            }
+
+            swipeUpQuick();
+            ++already_swiped;
+        }
+    }
 }
