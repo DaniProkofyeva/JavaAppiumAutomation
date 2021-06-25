@@ -35,7 +35,11 @@ public class FirstTest {
     }
 
     @After
-    public void TearDown() {
+    public void TearDown()
+    {
+        if(driver.getOrientation()!=ScreenOrientation.PORTRAIT){
+            driver.rotate(ScreenOrientation.PORTRAIT);
+        }
         driver.quit();
     }
 
@@ -641,7 +645,7 @@ public class FirstTest {
                 By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']"),
                 "Error finding JAVA",
                 5);
-        
+
         assertElementPresent(
                 By.id("org.wikipedia:id/view_page_title_text"),
                 "Article has no title"
