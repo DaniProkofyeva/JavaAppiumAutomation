@@ -2,6 +2,8 @@ package tests;
 import lib.CoreTestCase;
 import lib.ui.SearchPageObject;
 import org.junit.Test;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SearchTests extends CoreTestCase
 {
@@ -87,5 +89,24 @@ public class SearchTests extends CoreTestCase
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine(search_word);
         SearchPageObject.assertAllResultsHasText(search_word);
+    }
+
+    public void testSearchArticleByTitleAndDescription() {
+        Map<String, String> searchResults = new HashMap<>();
+        searchResults.put("Java", "Island of Indonesia");
+        searchResults.put("JavaScript", "Programming language");
+        searchResults.put("Java (programming language)", "Object-oriented programming language");
+
+        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        searchPageObject.initSearchInput();
+        searchPageObject.typeSearchLine("Java");
+
+        int amountOfSearchResults = searchPageObject.getAmountOfFoundArticles();
+
+        assertTrue(
+                String.format("\n  Error! We found less names: %d.\n", amountOfSearchResults),
+                amountOfSearchResults >= 3);
+
+        searchResults.forEach(searchPageObject::waitForElementByTitleAndDescription);
     }
 }

@@ -13,7 +13,11 @@ public class SearchPageObject extends MainPageObject
     SEARCH_RESULT_ELEMENT = "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container]",
     SEARCH_EMPTY_RESULT_ELEMENT = "//*[@text='No results found']",
     SEARCH_LENS_ICON ="org.wikipedia:id/menu_page_search",
-    SEARCH_RESULT_TITLE = "org.wikipedia:id/page_list_item_title";
+    SEARCH_RESULT_TITLE = "org.wikipedia:id/page_list_item_title",
+    SEARCH_RESULT_BY_TITLE_AND_DESCRIPTION_TPL =
+                    "//*[@resource-id='org.wikipedia:id/page_list_item_container']" +
+                            "[.//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='{ARTICLE_TITLE}']]" +
+                            "[.//*[@resource-id='org.wikipedia:id/page_list_item_description'][@text='{ARTICLE_DESCRIPTION}']]";
 
     public SearchPageObject(AppiumDriver driver)
     {
@@ -138,5 +142,20 @@ public class SearchPageObject extends MainPageObject
     public void clickSearchIcon()
     {
         this.waitForElementAndClick(By.id(SEARCH_LENS_ICON), "Cannot find and click search icon", 5);
+    }
+
+    private static String getArticleWithTitleAndDescription(String articleTitle, String articleDescription) {
+        return SEARCH_RESULT_BY_TITLE_AND_DESCRIPTION_TPL
+                .replace("{ARTICLE_TITLE}", articleTitle)
+                .replace("{ARTICLE_DESCRIPTION}", articleDescription);
+    }
+
+    public void waitForElementByTitleAndDescription(String title, String description) {
+        String articleWithTitleAndDescriptionXpath = getArticleWithTitleAndDescription(title, description);
+        this.waitForElementPresent(
+                By.xpath(articleWithTitleAndDescriptionXpath),
+                String.format("We no found name with '%s' and description '%s'.", title, description),
+                15
+        );
     }
 }
