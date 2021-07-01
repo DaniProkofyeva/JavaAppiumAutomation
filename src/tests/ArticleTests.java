@@ -16,7 +16,7 @@ public class ArticleTests extends CoreTestCase
         SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
 
         ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
-        String article_title = ArticlePageObject.gerArticleTitle();
+        String article_title = ArticlePageObject.getArticleTitle();
 
         assertEquals(
                 "We see unexpected title!",
@@ -37,6 +37,22 @@ public class ArticleTests extends CoreTestCase
         ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
         ArticlePageObject.waitForTitleElement();
         ArticlePageObject.swipeToFooter();
+
+    }
+
+    @Test
+    public void testArticleHasTitle() throws InterruptedException {
+
+        String search_line = "Java";
+        String substring = "Object-oriented programming language";
+
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine(search_line);
+        SearchPageObject.clickByArticleWithSubstring(substring);
+
+        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
+        ArticlePageObject.assertArticleHasTitle();
 
     }
 }

@@ -13,8 +13,16 @@ public class ArticlePageObject extends MainPageObject
     ADD_TO_MY_LIST_OVERLAY = "org.wikipedia:id/onboarding_button",
     MY_LIST_NAME_INPUT = "org.wikipedia:id/text_input",
     MY_LIST_OK_BUTTON = "//*[@text='OK']",
-    CLOSE_ARTICLE_BUTTON = "//android.widget.ImageButton[@content-desc='Navigate up']";
+    CLOSE_ARTICLE_BUTTON = "//android.widget.ImageButton[@content-desc='Navigate up']",
+    EXISTING_LIST_TPL = "//*[@resource-id='org.wikipedia:id/item_title'][@text='{FOLDER}']";
 
+
+    //----------TEMPLATE METHODS------------
+    private static String getFolderElement(String folder)
+    {
+        return EXISTING_LIST_TPL.replace("{FOLDER}", folder);
+    }
+    //----------TEMPLATE METHODS------------
 
     public ArticlePageObject(AppiumDriver driver)
     {
@@ -30,7 +38,7 @@ public class ArticlePageObject extends MainPageObject
         );
     }
 
-    public String gerArticleTitle()
+    public String getArticleTitle()
     {
         WebElement title_element = waitForTitleElement();
         return title_element.getAttribute("text");
@@ -89,4 +97,19 @@ public class ArticlePageObject extends MainPageObject
                 5
         );
     }
+
+    public void assertArticleHasTitle() {
+        this.assertElementPresent(By.xpath(TITLE),"Article has no title");
+    }
+
+    public void addArticleToExistingList(String name_of_folder)
+    {
+        this.waitForElementAndClick(By.xpath(OPTION_BUTTON), "Cannot find options", 5);
+
+        this.waitForElementAndClick(By.xpath(OPTIONS_ADD_TO_MY_LIST_BUTTON), "Cannot find option to add article to reading list", 7);
+
+        this.waitForElementAndClick(By.xpath(getFolderElement(name_of_folder)),"Cannot find existing folder to save article",5);
+
+    }
+
 }

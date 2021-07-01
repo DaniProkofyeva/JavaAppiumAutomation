@@ -33,9 +33,6 @@ public class CoreTestCase extends TestCase {
     @Override
     protected void tearDown() throws Exception
     {
-        if(driver.getOrientation()!= ScreenOrientation.PORTRAIT){
-            driver.rotate(ScreenOrientation.PORTRAIT);
-        }
         driver.quit();
 
         super.tearDown();

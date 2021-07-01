@@ -50,4 +50,42 @@ public class SearchTests extends CoreTestCase
         SearchPageObject.waitForEmptyResultsLabel();
         SearchPageObject.assertThereIsNoResultOfSearch();
     }
+
+    @Test
+    public void testSearchFieldText()
+    {
+        String search_hint = "Search…";
+
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject.initSearchInput();
+
+        assertEquals("Search hint is not: "+ search_hint,search_hint, SearchPageObject.getSearchlineHint());
+    }
+
+    @Test
+    public void testSearchSeveralArtAndCancel()
+    {
+        String search_line = "Java";
+
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine(search_line);
+
+        assertTrue("Few articles found", SearchPageObject.getAmountOfFoundArticles()>1);
+        SearchPageObject.clickCancelSearch();
+        SearchPageObject.assertThereIsNoResultOfSearch();
+    }
+
+    @Test
+    public void testSearchResultsText()
+    {
+        String search_word="Java";
+
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine(search_word);
+        SearchPageObject.assertAllResultsHasText(search_word);
+    }
 }

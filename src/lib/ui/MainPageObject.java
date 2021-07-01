@@ -19,6 +19,16 @@ public class MainPageObject {
         this.driver = driver;
     }
 
+    public void testTextSearchResults(By by, String text, String error_text)
+    {
+        List<WebElement> list = driver.findElements(by);
+        for(WebElement el : list)
+        {
+            System.out.println(el.getAttribute("text"));
+            Assert.assertTrue(error_text,el.getAttribute("text").contains(text));
+        }
+    }
+
     public List<WebElement> waitForNumberOfSeveralElements(By by, int number, String errorMessage, long timeoutInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
         wait.withMessage("\n  " + errorMessage + "\n");

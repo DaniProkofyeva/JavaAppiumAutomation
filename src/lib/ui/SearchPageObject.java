@@ -11,7 +11,9 @@ public class SearchPageObject extends MainPageObject
     SEARCH_CANCEL_BUTTON = "org.wikipedia:id/search_close_btn",
     SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='{SUBSTRING}']",
     SEARCH_RESULT_ELEMENT = "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container]",
-    SEARCH_EMPTY_RESULT_ELEMENT = "//*[@text='No results found']";
+    SEARCH_EMPTY_RESULT_ELEMENT = "//*[@text='No results found']",
+    SEARCH_LENS_ICON ="org.wikipedia:id/menu_page_search",
+    SEARCH_RESULT_TITLE = "org.wikipedia:id/page_list_item_title";
 
     public SearchPageObject(AppiumDriver driver)
     {
@@ -123,5 +125,18 @@ public class SearchPageObject extends MainPageObject
                 By.xpath(SEARCH_RESULT_ELEMENT),
                 "We supposed not to find any results"
         );
+    }
+
+    public String getSearchlineHint() {
+        return this.waitForElementAndGetAttribute(By.xpath(SEARCH_INPUT),"text", "Cannot find search input", 5);
+    }
+
+    public void assertAllResultsHasText(String search_word) {
+        this.testTextSearchResults(By.id(SEARCH_RESULT_TITLE),search_word,"Not all results has text: " + search_word);
+    }
+
+    public void clickSearchIcon()
+    {
+        this.waitForElementAndClick(By.id(SEARCH_LENS_ICON), "Cannot find and click search icon", 5);
     }
 }
