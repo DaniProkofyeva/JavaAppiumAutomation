@@ -27,6 +27,7 @@ public class SearchTests extends CoreTestCase
         SearchPageObject.clickCancelSearch();
         SearchPageObject.waitForCancelButtonToDisappear();
     }
+
     @Test
     public void testAmountOfNotEmptySearch() {
         SearchPageObject SearchPageObject = new SearchPageObject(driver);
@@ -79,6 +80,7 @@ public class SearchTests extends CoreTestCase
         SearchPageObject.assertThereIsNoResultOfSearch();
     }
 
+
     @Test
     public void testSearchResultsText()
     {
@@ -109,4 +111,5 @@ public class SearchTests extends CoreTestCase
 
         searchResults.forEach(searchPageObject::waitForElementByTitleAndDescription);
     }
+
 }
